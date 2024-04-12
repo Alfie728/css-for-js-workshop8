@@ -71,7 +71,7 @@ const slideIn = keyframes`
   }
 `;
 const AnimationWrapper = styled(CSSTransition)`
-  will-change: transition;
+  will-change: opacity;
 `;
 
 const Wrapper = styled(DialogOverlay)`
@@ -90,14 +90,14 @@ const Backdrop = styled.div`
   position: absolute;
   background: var(--color-backdrop);
   animation: ${fadeIn} 500ms;
-  will-change: transform;
+  will-change: opacity;
 `;
 
 const Content = styled(DialogContent)`
   --overfill: 16px;
   position: relative;
   background: white;
-  width: calc(300px + var(--overfill));
+  width: calc(300px + var(--overfill) * 2);
   height: 100%;
   margin-right: calc(var(--overfill) * -1);
   padding: 24px 32px;
@@ -111,7 +111,7 @@ const InnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  will-change: transform;
+  will-change: opacity;
 
   animation: ${fadeIn} 400ms both;
   animation-delay: 600ms;
@@ -120,7 +120,7 @@ const InnerWrapper = styled.div`
 const CloseButton = styled(UnstyledButton)`
   position: absolute;
   top: 10px;
-  right: 0;
+  right: var(--overfill);
   padding: 16px;
 `;
 
