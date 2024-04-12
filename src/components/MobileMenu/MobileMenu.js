@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useRef } from 'react';
 import styled, { keyframes } from 'styled-components/macro';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
+import { CSSTransition, Transition } from 'react-transition-group';
+import './animationStyles.css';
 
 import { QUERIES, WEIGHTS } from '../../constants';
 
@@ -9,33 +11,45 @@ import UnstyledButton from '../UnstyledButton';
 import Icon from '../Icon';
 import VisuallyHidden from '../VisuallyHidden';
 
-const MobileMenu = ({ isOpen, onDismiss }) => {
+const MobileMenu = ({ isOpen, setShowMobileMenu }) => {
+  const nodeRef = useRef(null);
+
   return (
-    <Wrapper isOpen={isOpen} onDismiss={onDismiss}>
-      <Backdrop />
-      <Content aria-label="Menu">
-        <InnerWrapper>
-          <CloseButton onClick={onDismiss}>
-            <Icon id="close" />
-            <VisuallyHidden>Dismiss menu</VisuallyHidden>
-          </CloseButton>
-          <Filler />
-          <Nav>
-            <NavLink href="/sale">Sale</NavLink>
-            <NavLink href="/new">New&nbsp;Releases</NavLink>
-            <NavLink href="/men">Men</NavLink>
-            <NavLink href="/women">Women</NavLink>
-            <NavLink href="/kids">Kids</NavLink>
-            <NavLink href="/collections">Collections</NavLink>
-          </Nav>
-          <Footer>
-            <SubLink href="/terms">Terms and Conditions</SubLink>
-            <SubLink href="/privacy">Privacy Policy</SubLink>
-            <SubLink href="/contact">Contact Us</SubLink>
-          </Footer>
-        </InnerWrapper>
-      </Content>
-    </Wrapper>
+    <AnimationWrapper
+      nodeRef={nodeRef}
+      in={isOpen}
+      timeout={200}
+      classNames="fade"
+      unmountOnExit
+      onEnter={() => setShowMobileMenu(true)}
+      onExited={() => setShowMobileMenu(false)}
+    >
+      <Wrapper dismissible ref={nodeRef}>
+        <Backdrop />
+        <Content aria-label="Menu">
+          <InnerWrapper>
+            <CloseButton onClick={() => setShowMobileMenu(false)}>
+              <Icon id="close" />
+              <VisuallyHidden>Dismiss menu</VisuallyHidden>
+            </CloseButton>
+            <Filler />
+            <Nav>
+              <NavLink href="/sale">Sale</NavLink>
+              <NavLink href="/new">New&nbsp;Releases</NavLink>
+              <NavLink href="/men">Men</NavLink>
+              <NavLink href="/women">Women</NavLink>
+              <NavLink href="/kids">Kids</NavLink>
+              <NavLink href="/collections">Collections</NavLink>
+            </Nav>
+            <Footer>
+              <SubLink href="/terms">Terms and Conditions</SubLink>
+              <SubLink href="/privacy">Privacy Policy</SubLink>
+              <SubLink href="/contact">Contact Us</SubLink>
+            </Footer>
+          </InnerWrapper>
+        </Content>
+      </Wrapper>
+    </AnimationWrapper>
   );
 };
 
@@ -48,15 +62,6 @@ const fadeIn = keyframes`
   }
 `;
 
-const fadeOut = keyframes`
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-`;
-
 const slideIn = keyframes`
   from {
     transform: translateX(100%)
@@ -65,14 +70,10 @@ const slideIn = keyframes`
     transform: translateX(0);
   }
 `;
-const slideOut = keyframes`
-  from {
-    transform: translateX(0)
-  }
-  to {
-    transform: translateX(100%);
-  }
+const AnimationWrapper = styled(CSSTransition)`
+  will-change: transition;
 `;
+
 const Wrapper = styled(DialogOverlay)`
   position: fixed;
   top: 0;
