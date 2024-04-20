@@ -9,6 +9,7 @@ import SuperHeader from '../SuperHeader';
 import MobileMenu from '../MobileMenu';
 import VisuallyHidden from '../VisuallyHidden';
 import NavLink from '../NavLink';
+import AnimatedBurgerMenu from '../AnimatedBurgerMenu';
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
@@ -37,7 +38,11 @@ const Header = () => {
             <Icon id="search" />
             <VisuallyHidden>Search</VisuallyHidden>
           </UnstyledButton>
-          <UnstyledButton onClick={() => setShowMobileMenu(true)}>
+          <AnimatedBurgerMenu />
+          <UnstyledButton
+            onClick={() => setShowMobileMenu(true)}
+            style={{ visibility: 'hidden' }}
+          >
             <Icon id="menu" />
             <VisuallyHidden>Open menu</VisuallyHidden>
           </UnstyledButton>
